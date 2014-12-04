@@ -1,36 +1,77 @@
-from BST import *
+from TreeAndNode import *
 import sys
 
 try:
     fileIN = open(sys.argv[1], 'r')
 except IndexError:
-    fileIN = open("E10IN.txt", 'r')
+    fileIN = open("E10.in", 'r')
+
+try:
+    fileOUT = open(sys.argv[2], 'w')
+except IndexError:
+    fileOUT = open("E10.out", 'w')
+
+caseCounter = 1
 
 while True:
-    numCases = int(fileIN.readline())
-    binTree = BinarySearchTree()
+    numCases = fileIN.readline()
     
-    for case in range(numCases):
+    if numCases == '': #EOF check
+        print("EOF!")
+        break
+
+    print("Caso " + str(caseCounter) + ':')
+    fileOUT.write("Caso " + str(caseCounter) + ":\n")
+
+    tree = BinarySearchTree()
+    
+    for case in range(int(numCases)):
+#        print("case:", str(case + 1))
+#        print("tree.getRoot():", tree.getRoot())
+        
         fLine = fileIN.readline().split()
+#        print("linha:", fLine)
+        
         if fLine[0] == 'A':
-            binTree.node_insert(Node(fLine[1]))
+            tree.node_insert(Node(fLine[1]))
         
         elif fLine[0] == 'B':
-            binTree.node_remove(Node(fLine[1]))
+            node2Bdel = tree.search(tree.getRoot(), fLine[1])
+            tree.node_remove(node2Bdel)
         
         elif fLine[0] == 'C':
-            print(binTree.predecessor(tree.getRoot()))
+            if tree.is_empty() == True:
+                print(0)
+                fileOUT.write("0\n")
+            
+            elif (tree.getRoot().getLeft() is None and
+                  tree.getRoot().getLeft() is None):
+                print(0)
+                fileOUT.write("0\n")
+            
+            else:
+                nodePivot = tree.search(tree.getRoot(), fLine[1])
+                print(tree.predecessor(nodePivot).getValue())
+                fileOUT.write(str(tree.predecessor(nodePivot).getValue()) + '\n')
         
         elif fLine[0] == "PRE":
-            print(' 'join.(binTree.pre_order(binTree.getRoot())))
+            print("PRE:", tree.traversal("PRE"))
+            fileOUT.write(str(tree.traversal("PRE")) + '\n')
         
         elif fLine[0] == "IN":
-            print(' 'join.(binTree.in_order(binTree.getRoot())))
+            print("IN:", tree.traversal("IN"))
+            fileOUT.write(str(tree.traversal("IN")) + '\n')
         
         elif fLine[0] == "POST":
-            print(' 'join.(binTree.post_order(binTree.getRoot())))
-    ##TO-DO:
-    ##outer loop check
-    ##Output File write
+            print("POST:", tree.traversal("POST"))
+            fileOUT.write(str(tree.traversal("POST")) + '\n')
+
+#        print("IN_DEBUG:", tree.traversal("IN"))
+    caseCounter += 1
+    
+    
+##TO-DO:
+##Remover depuracao das cavernas
 
 fileIN.close()
+fileOUT.close()

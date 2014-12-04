@@ -82,6 +82,15 @@ class BinarySearchTree:
             nodeWalker = nodeWalker.getRight()
         return nodeWalker
     
+    def search(self, nodeWalker, number):
+        if ((nodeWalker is None) or (number == nodeWalker.getNumber())):
+            return nodeWalker
+        
+        if number < nodeWalker.getNumber():
+            return self.search(nodeWalker.getLeft(), number)
+        else:
+            return self.search(nodeWalker.getRight(), number)
+    
     def successor(self, xNode):
         if xNode.getRight() is not None:
             return self.minimum(xNode.getRight())
