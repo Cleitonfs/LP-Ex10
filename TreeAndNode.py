@@ -113,10 +113,65 @@ class BinarySearchTree:
         """
         return self.getRoot() is None
     
+    def pre_order(self, nodeWalker, str2ret = ''):
+        """Metodo para travessia da arvore, modo pre-ordem
+        
+        Argumentos:
+            nodeWalker (Node obj): Objeto Nodo que percorre a arvore
+            str2ret (str): Concatena os valores armazenados em cada
+            um dos nodos da arvore
+        """
+        if self.is_empty() == True:
+            return 0
+        
+        if nodeWalker is not None:
+            str2ret += (str(nodeWalker.getValue()) + ' ')
+            str2ret = self.pre_order(nodeWalker.getLeft(), str2ret)
+            str2ret = self.pre_order(nodeWalker.getRight(), str2ret)
+            
+        return str2ret
+    
+    def in_order(self, nodeWalker, str2ret = ''):
+        """Metodo para travessia da arvore, modo em-ordem
+        
+        Argumentos:
+            nodeWalker (Node obj): Objeto Nodo que percorre a arvore
+            str2ret (str): Concatena os valores armazenados em cada
+            um dos nodos da arvore
+        """
+        if self.is_empty() == True:
+            return 0
+        
+        if nodeWalker is not None:
+            str2ret = self.in_order(nodeWalker.getLeft(), str2ret)
+#            print('.' + str(nodeWalker.getValue())) #CAVEMAN's DEBUG
+            str2ret += (str(nodeWalker.getValue()) + ' ')
+            str2ret = self.in_order(nodeWalker.getRight(), str2ret)
+            
+        return str2ret
+    
+    def post_order(self, nodeWalker, str2ret = ''):
+        """Metodo para travessia da arvore, modo pos-ordem
+        
+        Argumentos:
+            nodeWalker (Node obj): Objeto Nodo que percorre a arvore
+            str2ret (str): Concatena os valores armazenados em cada
+            um dos nodos da arvore
+        """
+        if self.is_empty() == True:
+            return 0
+        
+        if nodeWalker is not None:
+            str2ret = self.post_order(nodeWalker.getLeft(), str2ret)
+#            print('.' + str(nodeWalker.getValue())) #CAVEMAN's DEBUG
+            str2ret = self.post_order(nodeWalker.getRight(), str2ret)
+            str2ret += (str(nodeWalker.getValue()) + ' ')
+            
+        return str2ret
     
     def traversal(self, traversalMode):
-        """Controla o tipo de travessia da arvore e mantem o escopo para
-        manipular o retorno da funcao recursiva de travessia
+        """Controla o tipo de travessia da arvore e manipula o retorno
+        da funcao recursiva de travessia
         
         Argumentos:
             traversalMode (str): String identificador do tipo de
@@ -285,6 +340,27 @@ class BinarySearchTree:
         
         return yNode
     
+    def predecessor_alt(self, nodePivot):
+        xNode = nodePivot
+        
+        while xNode.getLeft() is not None:
+            xNode = xNode.getLeft()
+            if xNode.getValue() != nodePivot.getValue():
+                return self.maximum(xNode.getLeft())
+        
+        xNode = nodePivot
+        if xNode.getFather() is not None:
+            yNode = xNode.getFather()
+            while ((yNode is not None) and
+                   (xNode is yNode.getFather())):
+                xNode = yNode
+                yNode = yNode.getFather()
+        
+        else:
+            return None
+        
+        return yNode
+    
     def node_insert(self, node2ins):
         """Insere o objeto Nodo na arvore dependendo do seu atributo
         '_value'
@@ -296,7 +372,7 @@ class BinarySearchTree:
         xNode = self.getRoot()
         while xNode is not None:
             yNode = xNode
-            if node2ins.getValue() < xNode.getValue():
+            if node2ins.getValue() <= xNode.getValue():
                 xNode = xNode.getLeft()
             else:
                 xNode = xNode.getRight()
@@ -305,7 +381,7 @@ class BinarySearchTree:
         if yNode is None:
             self.setRoot(node2ins)
         else:
-            if node2ins.getValue() < yNode.getValue():
+            if node2ins.getValue() <= yNode.getValue():
                 yNode.setLeft(node2ins)
             else:
                 yNode.setRight(node2ins)

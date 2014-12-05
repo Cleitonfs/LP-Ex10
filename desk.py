@@ -36,5 +36,11 @@ print(nodeP.getValue())
 #print(t.predecessor(t.getRoot()))
 
 tree = BinarySearchTree()
-print(tree.is_empty())
-print(tree.getRoot() is None)
+tree.node_insert(Node(5))
+tree.node_insert(Node(6))
+#tree.node_insert(Node(6))
+tree.node_insert(Node(1))
+
+searc = tree.search(tree.getRoot(), 6)
+print("Pred:", tree.predecessor(searc).getValue())
+print("Pred_alt:", tree.predecessor_alt(searc).getValue())

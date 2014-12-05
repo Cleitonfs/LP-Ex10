@@ -51,20 +51,34 @@ while True:
             
             else:
                 nodePivot = tree.search(tree.getRoot(), fLine[1])
-                print(tree.predecessor(nodePivot).getValue())
-                fileOUT.write(str(tree.predecessor(nodePivot).getValue()) + '\n')
+                print(tree.predecessor_alt(nodePivot).getValue())
+                fileOUT.write(str(tree.predecessor_alt(nodePivot).getValue()) + '\n')
         
         elif fLine[0] == "PRE":
-            print("PRE:", tree.traversal("PRE"))
-            fileOUT.write(str(tree.traversal("PRE")) + '\n')
+            if tree.is_empty() == True:
+                print("PRE:", '0')
+                fileOUT.write("0\n")
+            else:
+                print("PRE:", tree.pre_order(tree.getRoot()))
+                fileOUT.write(tree.pre_order(tree.getRoot())[:-1] + '\n')
         
         elif fLine[0] == "IN":
-            print("IN:", tree.traversal("IN"))
-            fileOUT.write(str(tree.traversal("IN")) + '\n')
+            if tree.is_empty() == True:
+                print("IN:", '0')
+                fileOUT.write("0\n")
+            else:
+                print("IN:", tree.in_order(tree.getRoot()))
+                fileOUT.write(tree.in_order(tree.getRoot())[:-1] + '\n')
+        
         
         elif fLine[0] == "POST":
-            print("POST:", tree.traversal("POST"))
-            fileOUT.write(str(tree.traversal("POST")) + '\n')
+            if tree.is_empty() == True:
+                print("POST:", '0')
+                fileOUT.write("0\n")
+            else:
+                print("POST:", tree.post_order(tree.getRoot()))
+                fileOUT.write(tree.post_order(tree.getRoot())[:-1] + '\n')
+        
 
 #        print("IN_DEBUG:", tree.traversal("IN"))
     caseCounter += 1
