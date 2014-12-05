@@ -2,7 +2,7 @@ class Node:
     """Define os nodos individuais para estruturas encadeadas
 
     Atributos:
-        _value (obj): valor a ser armazenado
+        _value (obj): valor a ser armazenado, serve como 'chave'
         _father (ponteiro): endereco do no pai, inicializado com None
         _left (ponteiro): endereco do filho esquerdo, inicio com None
         _right (ponteiro): endereco do filho direito, inicio com None
@@ -120,6 +120,10 @@ class BinarySearchTree:
             nodeWalker (Node obj): Objeto Nodo que percorre a arvore
             str2ret (str): Concatena os valores armazenados em cada
             um dos nodos da arvore
+        
+        Retorno:
+            String produzido pela concatenacao dos valores armazenados
+            em um dos nodos da arvore
         """
         if self.is_empty() == True:
             return 0
@@ -138,13 +142,16 @@ class BinarySearchTree:
             nodeWalker (Node obj): Objeto Nodo que percorre a arvore
             str2ret (str): Concatena os valores armazenados em cada
             um dos nodos da arvore
+        
+        Retorno:
+            String produzido pela concatenacao dos valores armazenados
+            em um dos nodos da arvore
         """
         if self.is_empty() == True:
             return 0
         
         if nodeWalker is not None:
             str2ret = self.in_order(nodeWalker.getLeft(), str2ret)
-#            print('.' + str(nodeWalker.getValue())) #CAVEMAN's DEBUG
             str2ret += (str(nodeWalker.getValue()) + ' ')
             str2ret = self.in_order(nodeWalker.getRight(), str2ret)
             
@@ -157,88 +164,20 @@ class BinarySearchTree:
             nodeWalker (Node obj): Objeto Nodo que percorre a arvore
             str2ret (str): Concatena os valores armazenados em cada
             um dos nodos da arvore
+        
+        Retorno:
+            String produzido pela concatenacao dos valores armazenados
+            em um dos nodos da arvore
         """
         if self.is_empty() == True:
             return 0
         
         if nodeWalker is not None:
             str2ret = self.post_order(nodeWalker.getLeft(), str2ret)
-#            print('.' + str(nodeWalker.getValue())) #CAVEMAN's DEBUG
             str2ret = self.post_order(nodeWalker.getRight(), str2ret)
             str2ret += (str(nodeWalker.getValue()) + ' ')
             
         return str2ret
-    
-    def traversal(self, traversalMode):
-        """Controla o tipo de travessia da arvore e manipula o retorno
-        da funcao recursiva de travessia
-        
-        Argumentos:
-            traversalMode (str): String identificador do tipo de
-            travessia
-        
-        Retorno:
-            String contendo os valores armazenados em cada um dos nodos
-        """
-        if self.is_empty() == True:
-            return 0
-        
-        array = []
-        
-        if traversalMode == "PRE":
-            self.__pre_order(self.getRoot(), array)
-        
-        elif traversalMode == "POST":
-            self.__post_order(self.getRoot(), array)
-        
-        else:
-            self.__in_order(self.getRoot(), array)
-        
-        str2return = ' '.join(array)
-        del array
-        return str2return
-    
-    def __pre_order(self, nodeWalker, arr2return):
-        """Metodo secundario para travessia da arvore, modo pre-ordem
-        
-        Argumentos:
-            nodeWalker (Node obj): Objeto Nodo que percorre a arvore
-            arr2return (array): Insere os valores armazenados em cada
-            um dos nodos da arvore no array criado no escopo anterior
-        """
-        if nodeWalker is not None:
-            arr2return.append(str(nodeWalker.getValue()))
-            self.__pre_order(nodeWalker.getLeft(), arr2return)
-            self.__pre_order(nodeWalker.getRight(), arr2return)
-        return arr2return
-    
-    def __in_order(self, nodeWalker, arr2return = []):
-        """Metodo secundario para travessia da arvore, modo em-ordem
-        
-        Argumentos:
-            nodeWalker (Node obj): Objeto Nodo que percorre a arvore
-            arr2return (array): Insere os valores armazenados em cada
-            um dos nodos da arvore no array criado no escopo anterior
-        """
-        if nodeWalker is not None:
-            self.__in_order(nodeWalker.getLeft(), arr2return)
-            arr2return.append(str(nodeWalker.getValue()))
-            self.__in_order(nodeWalker.getRight(), arr2return)
-        return arr2return
-    
-    def __post_order(self, nodeWalker, arr2return):
-        """Metodo secundario para travessia da arvore, modo pos-ordem
-        
-        Argumentos:
-            nodeWalker (Node obj): Objeto Nodo que percorre a arvore
-            arr2return (array): Insere os valores armazenados em cada
-            um dos nodos da arvore no array criado no escopo anterior
-        """
-        if nodeWalker is not None:
-            self.__post_order(nodeWalker.getLeft(), arr2return)
-            self.__post_order(nodeWalker.getRight(), arr2return)
-            arr2return.append(str(nodeWalker.getValue()))
-        return arr2return
     
     def minimum(self,nodeWalker):
         """Percorre recursivamente a arvore em busca do nodo  om o menor
@@ -292,7 +231,8 @@ class BinarySearchTree:
     
     def successor(self, xNode):
         """Percorre a arvore em busca do nodo com menor valor da
-        sub-arvore direita do nodo 'xNode'
+        sub-arvore direita ou o menor valor ancestral direito ao nodo
+        'xNode'
         
         Argumentos:
             xNode (Node obj): Nodo pivo
@@ -317,7 +257,8 @@ class BinarySearchTree:
     
     def predecessor(self, xNode):
         """Percorre a arvore em busca do nodo com o maior valor da
-        sub-arvore esquerda do nodo 'xNode'
+        sub-arvore esquerda ou o menor valor ancestral esquerdo ao nodo
+        'xNode'
         
         Argumentos:
             xNode (Node obj): Nodo pivo
@@ -341,6 +282,16 @@ class BinarySearchTree:
         return yNode
     
     def predecessor_alt(self, nodePivot):
+        """Percorre a arvore em busca do nodo com o maior valor da
+        sub-arvore esquerda ou o menor valor ancestral ao nodo
+        'NodePivot' porem valor diferente
+        
+        Argumentos:
+            nodePivot (Node obj): Nodo pivo
+        
+        Retorno:
+            Referencia ao objeto Nodo antecessor de 'nodePivot'
+        """
         xNode = nodePivot
         
         while xNode.getLeft() is not None:
